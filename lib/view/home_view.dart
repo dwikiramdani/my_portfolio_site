@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key, required this.title});
@@ -45,6 +46,57 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 
+  List<Widget> buildIntro() {
+    return [
+      Container(
+        width: 160,
+        height: 160,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(100),
+          image: DecorationImage(
+            image: AssetImage("assets/my_logo_kiram.png"),
+          ),
+        ),
+      ),
+      const SizedBox(height: 32),
+      Text(
+        'I make Android and iOS Application\nFlutter & React Native ',
+        textAlign: TextAlign.center,
+        style: TextStyle(fontSize: 36, fontWeight: FontWeight.w800),
+      ),
+      const SizedBox(height: 32),
+      Text(
+        'I am a seasoned Software Developer with over\n5 years of professional experience specializing in\nMulti-Platform Software Development',
+        textAlign: TextAlign.center,
+        style: TextStyle(fontSize: 18, fontWeight: FontWeight.w300),
+      ),
+    ];
+  }
+
+  Widget buildTechStacks() {
+    List<Widget> widgets = [];
+    techIcons.forEach((element) {
+      widgets.add(
+        Container(
+          width: 60,
+          height: 60,
+          padding: const EdgeInsets.all(12),
+          margin: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            border: Border.all(width: 2, color: Color(0xFF8491A0),),
+            borderRadius: BorderRadius.circular(12)
+          ),
+          child: SvgPicture.asset(element, color: Color(0xFF8491A0),),
+        )
+      );
+    });
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: widgets,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,27 +108,49 @@ class _HomeViewState extends State<HomeView> {
           children: <Widget>[
             buildNavigationMenu(),
             const SizedBox(height: 80),
-            Container(
-              width: 160,
-              height: 160,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(100),
-                image: DecorationImage(
-                  image: AssetImage("assets/my_logo_kiram.png"),
+            ...buildIntro(),
+            const SizedBox(height: 32),
+            InkWell(
+              child: Container(
+                width: 200,
+                height: 64,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  border: Border.all(width: 2, color: Colors.white),
+                  borderRadius: BorderRadius.circular(32)
+                ),
+                child: Text(
+                  "Download CV",
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500
+                  ),
                 ),
               ),
             ),
             const SizedBox(height: 32),
-            Text(
-              'I do Flutter and React Native \nMake Android and iOS Applications',
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 36, fontWeight: FontWeight.w800),
-
-            ),
+            buildTechStacks(),
           ],
         ),
       ),
     );
   }
 }
+
+List<String> techIcons = [
+  "assets/tech/android.svg",
+  "assets/tech/ios.svg",
+  "assets/tech/flutter.svg",
+  "assets/tech/react.svg",
+  "assets/tech/javascript.svg",
+  "assets/tech/dart.svg",
+];
+
+List<Map<String, dynamic>> experiences = [
+  {
+    "logo": "",
+    "company": "",
+    "period": "",
+    "description": "",
+  }
+];
