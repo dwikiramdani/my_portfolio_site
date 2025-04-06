@@ -1,6 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../const.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -10,7 +13,7 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  var selectedTab = 3;
+  var selectedTab = 4;
 
   Widget buildNavbarMenu({required int id, required String title}) {
     return GestureDetector(
@@ -215,73 +218,16 @@ class _HomeViewState extends State<HomeView> {
   }
 
   Widget buildProjects() {
-    final screenSizeWidth = MediaQuery.of(context).size.width;
-    List<Widget> widgets = [];
-    for (var element in experiences) {
-      widgets.add(
-        Container(
-          width: screenSizeWidth * 0.6,
-          padding: const EdgeInsets.only(bottom: 40),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Row(
-                children: [
-                  Expanded(
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 32,
-                          height: 32,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(100),
-                            image: DecorationImage(
-                              image: AssetImage(element["logo"]),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        Text(
-                          element["company"],
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.w800,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Text(
-                    element["period"],
-                    style: TextStyle(fontSize: 16, color: Color(0xFF8491A0)),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 8),
-              Text(
-                element["position"],
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.grey,
-                ),
-              ),
-              const SizedBox(height: 16),
-              Text(
-                element["description"],
-                textAlign: TextAlign.justify,
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w200,
-                  color: Colors.grey,
-                ),
-              ),
-              const SizedBox(height: 32),
-            ],
-          ),
-        ),
-      );
-    }
+    final screenWidth = MediaQuery.of(context).size.width;
+    int getCrossAxisCount() {
+        if (screenWidth < 600) {
+          return 1;
+        } else if (screenWidth < 1200) {
+          return 2;
+        } else {
+          return 3;
+        }
+      }
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 120),
       child: Column(
@@ -295,23 +241,68 @@ class _HomeViewState extends State<HomeView> {
           GridView.count(
             shrinkWrap: true, // Allow GridView to be scrollable
             physics: AlwaysScrollableScrollPhysics(), // Enable scrolling
-            crossAxisCount: 3,
-            mainAxisSpacing: 80,
-            crossAxisSpacing: 64,
-            children: List.generate(10, (index) {
+            crossAxisCount: getCrossAxisCount(),
+            mainAxisSpacing: 32,
+            crossAxisSpacing: 32,
+            children: List.generate(projects.length, (index) {
+              var item = projects[index];
               return SizedBox(
                 width: double.infinity,
                 height: double.infinity,
                 child: Container(
+                  padding: const EdgeInsets.all(32),
                   decoration: BoxDecoration(
                     border: Border.all(width: 2, color: Color(0xFF8491A0)),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Text(
-                        'Item $index',
-                        style: TextTheme.of(context).headlineSmall,
+                      Container(
+                        width: 72,
+                        height: 72,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(100),
+                          image: DecorationImage(
+                            image: AssetImage(item["image"]),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 32),
+                      Expanded(
+                        child: Column(
+                          children: [
+                            Text(
+                              item['title'],
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w800,
+                              ),
+                            ),
+                            const SizedBox(height: 16),
+                            Text(
+                              item['description'],
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 3,
+                              textAlign: TextAlign.justify,
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w800,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      ElevatedButton(
+                        onPressed: () => showProjectModal(context, item),
+                        child: const Text("Link"),
+                        style: ElevatedButton.styleFrom(
+                          elevation: 1,
+                          side: BorderSide(color: Colors.white10, width: 2),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -321,6 +312,176 @@ class _HomeViewState extends State<HomeView> {
           ),
         ],
       ),
+    );
+  }
+
+  void showProjectModal(BuildContext context, Map item) {
+  showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        backgroundColor: const Color(0xFF161513),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        contentPadding: const EdgeInsets.all(24),
+        content: SizedBox(
+          width: 600,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Image
+              Container(
+                width: 120,
+                height: 120,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(100),
+                  image: DecorationImage(
+                    image: AssetImage(item["image"]),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 24),
+
+              // Title
+              Text(
+                item["title"],
+                style: const TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+              const SizedBox(height: 16),
+
+              // Description
+              Text(
+                item["description"],
+                textAlign: TextAlign.justify,
+                style: const TextStyle(
+                  fontSize: 16,
+                  color: Colors.white70,
+                ),
+              ),
+              const SizedBox(height: 32),
+
+              // Buttons
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  if (item["playstore"] != null)
+                    ElevatedButton.icon(
+                      onPressed: () => _launchUrl(item["playstore"]),
+                          icon: const Icon(Icons.android, color: Colors.grey),
+                      label: const Text("Download"),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.transparent,
+                        foregroundColor: Colors.white,
+                        elevation: 0,
+                        side: const BorderSide(color: Colors.white10, width: 2),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                    ),
+                  if (item["appstore"] != null)
+                    ElevatedButton.icon(
+                      onPressed: () => _launchUrl(item["appstore"]),
+                          icon: const Icon(Icons.apple, color: Colors.grey),
+                      label: const Text("App Store"),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.transparent,
+                        foregroundColor: Colors.white,
+                        elevation: 0,
+                        side: const BorderSide(color: Colors.white10, width: 2),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      );
+    },
+  );
+}
+
+  void _launchUrl(String url) async {
+    final uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      print("URL: $url");
+      await launchUrl(
+        uri,
+        mode: kIsWeb ? LaunchMode.platformDefault : LaunchMode.externalApplication,
+      );
+    }
+  }
+
+  final _subjectController = TextEditingController();
+  final _messageController = TextEditingController();
+
+  void sendEmail() async {
+    final subject = Uri.encodeComponent(_subjectController.text.trim());
+    final body = Uri.encodeComponent(_messageController.text.trim());
+
+    final gmailUrl =
+        'https://mail.google.com/mail/?view=cm&to=official.dwikiramdani@gmail.com&su=$subject&body=$body';
+
+    final uri = Uri.parse(gmailUrl);
+
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(
+        uri,
+        mode: LaunchMode.externalApplication, // Open in new tab on web
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Could not open Gmail")),
+      );
+    }
+  }
+
+  Widget buildContactMe() {
+    final screenSizeWidth = MediaQuery.of(context).size.width;
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          "Contact Me",
+          style: TextStyle(fontSize: 36, fontWeight: FontWeight.w800),
+        ),
+        Padding(
+          padding: EdgeInsets.all(64), 
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text("Subject"),
+              TextField(
+                controller: _subjectController,
+                decoration: const InputDecoration(border: OutlineInputBorder()),
+              ),
+              const SizedBox(height: 16),
+
+              const Text("Message"),
+              TextField(
+                controller: _messageController,
+                maxLines: 5,
+                decoration: const InputDecoration(border: OutlineInputBorder()),
+              ),
+              const SizedBox(height: 24),
+
+              ElevatedButton(
+                onPressed: sendEmail,
+                child: const Text("Send Message"),
+              ),
+            ],
+          ),
+        )
+      ],
     );
   }
 
@@ -336,6 +497,10 @@ class _HomeViewState extends State<HomeView> {
       case 3:
         selectedWidget = buildProjects();
         break;
+      case 4:
+        selectedWidget = buildContactMe();
+        break;
+
     }
     return selectedWidget;
   }
@@ -360,70 +525,3 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 }
-
-List<String> techIcons = [
-  "assets/tech/android.svg",
-  "assets/tech/ios.svg",
-  "assets/tech/flutter.svg",
-  "assets/tech/react.svg",
-  "assets/tech/javascript.svg",
-  "assets/tech/dart.svg",
-];
-
-List<Map<String, dynamic>> experiences = [
-  {
-    "logo": "assets/company/gramedia_logo.jpeg",
-    "company": "Kompas Gramedia",
-    "position": "Mobile Engineer - Flutter",
-    "period": "April 2022 - April 2025",
-    "description":
-        "My role in this position, is to recreate current application from Native (Java and Swift) "
-        "and rewrite it to hybrid application for multiplatform device Android and iOS. Built using Flutter "
-        "as main tech stack. Firebase for Analytic, Crashlytics, Realtime Database, Remote Config, and Firebase Cloud Messaging. "
-        "I also responsible to ensure improve quality of Epub and PDF reader by implement in house native Library to Flutter",
-  },
-  {
-    "logo": "assets/company/goers_logo.jpeg",
-    "company": "Goers",
-    "position": "Mobile Engineer - Flutter",
-    "period": "August 2019 - April 2022",
-    "description":
-        "I played crucial role to do refactor and rewrite of legacy code from React Native into Flutter. "
-        "My main responsibility is to ensure a clean and optimized refactored code to be working flawlessly "
-        "and prevent any potential issue that will occur when refactor and rewrite code is done. Other than rewrite and refactor, "
-        "my responsibilities also working on implementing Ministry of Health mandatory health checkup verification when Covid Outbreak happens "
-        "in 2020 to ensure user safety and to maintain business to keep running and increase company revenue even there are market crash for "
-        "event and travel is restricted",
-  },
-  {
-    "logo": "assets/company/zipkos_logo.jpeg",
-    "company": "Zipkos",
-    "position": "Mobile Engineer - React Native",
-    "period": "November 2020 - June 2021",
-    "description":
-        "I was giving responsibility to create House Rent Booking Feature, my role is to ensure user to easily "
-        "finding house for rent that best suited for them, also make it easy to communicate with owner regarding "
-        "housing detail and renting. As for the owner, I ensure they can manage their property with ease, also "
-        "providing IoT component to observe their property in realtime",
-  },
-  {
-    "logo": "assets/company/icubic_logo.jpeg",
-    "company": "Icubic",
-    "position": "Mobile Engineer - React Native",
-    "period": "March 2019 - August 2019",
-    "description":
-        "My responsibility in my time working in Icubic, I was working on creating Running Event App. Developed with React Native "
-        "as Technology Stack, with main feature is event marketplace, user running tracker, and event running tracker. Google Cloud Platform "
-        "is used to create realtime geolocation tracker",
-  },
-];
-
-List<Map<String, dynamic>> navItems = [
-  {"id": 1, "title": "Home"},
-  {"id": 2, "title": "Experiences"},
-  {"id": 3, "title": "Projects"},
-  {"id": 4, "title": "Contact"},
-];
-
-final fileUrl =
-    "https://drive.google.com/uc?export=download&id=19lbMvcu9NPHjah4bVJsYZApnCvi-NpoZ";
