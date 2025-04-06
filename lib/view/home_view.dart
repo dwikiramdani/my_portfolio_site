@@ -455,7 +455,7 @@ class _HomeViewState extends State<HomeView> {
           style: TextStyle(fontSize: 36, fontWeight: FontWeight.w800),
         ),
         Padding(
-          padding: EdgeInsets.all(64), 
+          padding: EdgeInsets.symmetric(horizontal: 120, vertical: 32), 
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
