@@ -77414,8 +77414,8 @@ for(s=$.aMW,r=0;r<4;++r){q=s[r]
 n.push(this.aez(q.i(0,"id"),q.i(0,"title")))
 if(!J.d(q.i(0,"id"),4))n.push(new A.eZ(32,p,p,p))}s=A.aN(4280427042)
 return A.oL(B.a7,p,A.i6(p,A.mx(A.b([new A.xG(A.aFZ(p,p,new A.jW("assets/my_logo_kiram.png",p,p)),p),A.mx(n,B.ah,B.ao)],o),B.th,B.ao),B.z,s,p,80,p,p,1/0),B.z,p,1,p,p,p,p,p,B.dg)},
-aex(){var s=null,r=A.hq(100)
-r=A.W(A.b([A.i6(B.U,s,B.z,s,new A.di(s,A.YG(s,new A.jW("assets/my_logo_kiram.png",s,s)),s,r,s,s,B.aw),160,s,s,160),B.bv,A.i6(s,A.dq("I make Android and iOS Application Flutter & React Native ",s,s,s,A.ee(s,s,s,s,s,s,s,s,s,s,s,36,s,s,B.bf,s,s,!0,s,s,s,s,s,s,s,s),B.eO,s),B.z,s,s,s,s,s,800),B.bv,A.ec(A.dq("I am a seasoned Software Developer with over 5 years of professional experience specializing in Multi-Platform Software Development",s,s,s,A.ee(s,s,s,s,s,s,s,s,s,s,s,18,s,s,B.ef,s,s,!0,s,s,s,s,s,s,s,s),B.eO,s),s,520)],t.D),!0,t.l7)
+aex(){var s=null,r=A.hq(200)
+r=A.W(A.b([A.i6(B.U,s,B.z,s,new A.di(s,A.YG(s,new A.jW("assets/my_photo.jpg",s,s)),s,r,s,s,B.aw),160,s,s,166),B.bv,A.i6(s,A.dq("I make Android and iOS Application Flutter & React Native ",s,s,s,A.ee(s,s,s,s,s,s,s,s,s,s,s,36,s,s,B.bf,s,s,!0,s,s,s,s,s,s,s,s),B.eO,s),B.z,s,s,s,s,s,800),B.bv,A.ec(A.dq("I am a seasoned Software Developer with over 5 years of professional experience specializing in Multi-Platform Software Development",s,s,s,A.ee(s,s,s,s,s,s,s,s,s,s,s,18,s,s,B.ef,s,s,!0,s,s,s,s,s,s,s,s),B.eO,s),s,520)],t.D),!0,t.l7)
 r.push(B.bv)
 r.push(A.aox(!1,A.i6(B.U,A.dq("Download CV",s,s,s,A.ee(s,s,s,s,s,s,s,s,s,s,s,20,s,s,B.Q,s,s,!0,s,s,s,s,s,s,s,s),s,s),B.z,s,s,64,s,s,200),s,s,s,s,s,s,new A.ahd(),s,s))
 r.push(B.bv)
